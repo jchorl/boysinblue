@@ -6,7 +6,7 @@ prettier:
 		-v "$(PWD)":/bib \
 		-w /bib \
 		node:8 \
-		sh -c "npm install -g prettier; prettier"
+		sh -c "npm install -g prettier; prettier --write *.js"
 
 serve:
 	docker run -it --rm \
