@@ -1,11 +1,11 @@
 {
-  "name": "boys-in-blue",
+  "name": "boysinblue-221115",
   "version": "1.0.0",
   "description": "",
   "scripts": {
     "start": "node app.js"
   },
-  "author": "Facebook",
+  "author": "Josh Chorlton",
   "license": "ISC",
   "dependencies": {
     "@google-cloud/datastore": "^2.0.0",

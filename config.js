@@ -1,3 +1,3 @@
 module.exports = {
-  APP_ID: "boys-in-blue"
+  APP_ID: "boysinblue-221115"
 };

@@ -22,5 +22,5 @@ deploy:
 		-v $(PWD):/bib \
 		-w /bib \
 		jchorl/appengine-node \
-		sh -c "echo \"gcloud auth login\ngcloud config set project boys-in-blue\ngcloud app deploy\ngcloud app deploy cron.yaml\" && \
+		sh -c "echo \"gcloud auth login\ngcloud config set project boysinblue-221115\ngcloud app deploy\ngcloud app deploy cron.yaml\" && \
 		bash"
