@@ -21,5 +21,6 @@ deploy:
 	docker run -it --rm \
 		-v $(PWD):/bib \
 		-w /bib \
-		node:8 \
-		sh -c "bash"
+		jchorl/appengine-node \
+		sh -c "echo \"gcloud auth login\ngcloud config set project boys-in-blue\ngcloud app deploy\ngcloud app deploy cron.yaml\" && \
+		bash"

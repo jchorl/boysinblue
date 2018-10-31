@@ -1,0 +1,4 @@
+cron:
+- description: "leafs"
+  url: /cron
+  schedule: every 10 minutes

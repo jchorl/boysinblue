@@ -1,0 +1,4 @@
+{
+  "GCLOUD_PROJECT": "boys-in-blue",
+  "DATA_BACKEND": "datastore"
+}
