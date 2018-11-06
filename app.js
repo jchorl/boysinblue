@@ -185,8 +185,8 @@ function callSendAPI(sender_psid, response) {
 
 function getTodayString() {
   const today = new Date();
-  const dd = today.getDate();
-  const mm = today.getMonth() + 1; //January is 0!
+  let dd = today.getDate();
+  let mm = today.getMonth() + 1; //January is 0!
   const yyyy = today.getFullYear();
 
   if (dd < 10) {
@@ -197,7 +197,7 @@ function getTodayString() {
     mm = "0" + mm;
   }
 
-  const formatted = yyyy + "-" + mm + "-" + dd;
+  return yyyy + "-" + mm + "-" + dd;
 }
 
 function getTheavsPost() {
