@@ -74,6 +74,7 @@ app.get("/cron", (req, res) => {
       }
 
       if (!body.dates || body.dates.length < 1) {
+        console.log("No games today");
         res.sendStatus(200);
         return;
       }
@@ -83,8 +84,11 @@ app.get("/cron", (req, res) => {
       const timeUntilGame = gameTime - now.getTime();
 
       if (timeUntilGame < 10 * 60 * 1000 && timeUntilGame > 0) {
+        console.log("Within 10 minutes of the game");
         getTheavsPost().then(post => {
           if (post) {
+            console.log("Found post");
+
             // query for users
             const query = datastore.createQuery(psidType);
             datastore.runQuery(query, (err, entities, info) => {
@@ -95,16 +99,20 @@ app.get("/cron", (req, res) => {
                 return;
               }
 
+              console.log("Messaging " + entities.length + " people");
+
               for (let i = 0; i < entities.length; ++i) {
                 callSendAPI(entities[i].psid, { text: post.url });
               }
               res.sendStatus(200);
             });
           } else {
+            console.log("Could not find post");
             res.sendStatus(200);
           }
         });
       } else {
+        console.log("Not within 10 minutes of game time");
         res.sendStatus(200);
       }
     }
