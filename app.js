@@ -223,6 +223,6 @@ function getTheavsPost() {
     .find(
       post =>
         post.title.toLowerCase().includes("leafs") &&
-        post.author.name === "theavs"
+        post.author.name.toLowerCase().includes("theavs")
     );
 }
