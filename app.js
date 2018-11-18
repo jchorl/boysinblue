@@ -3,9 +3,11 @@
 const Datastore = require("@google-cloud/datastore");
 const request = require("request");
 const express = require("express");
+const fetch = require("node-fetch");
 const body_parser = require("body-parser");
 const snoowrap = require("snoowrap");
 const moment = require('moment-timezone');
+const watchdog = require('./watchdog_pb');
 
 const secrets = require("./secrets");
 const config = require("./config");
@@ -76,6 +78,7 @@ app.get("/cron", (req, res) => {
 
       if (!body.dates || body.dates.length < 1) {
         console.log("No games today");
+        notifyWatchdog();
         res.sendStatus(200);
         return;
       }
@@ -105,22 +108,25 @@ app.get("/cron", (req, res) => {
               for (let i = 0; i < entities.length; ++i) {
                 callSendAPI(entities[i].psid, { text: post.url });
               }
+              notifyWatchdog();
               res.sendStatus(200);
             });
           } else {
             console.log("Could not find post");
+            notifyWatchdog();
             res.sendStatus(200);
           }
         });
       } else {
         console.log("Not within 10 minutes of game time");
+        notifyWatchdog();
         res.sendStatus(200);
       }
     }
   );
 });
 
-app.listen(process.env.PORT || 1337, () => console.log("webhook is listening"));
+app.listen(process.env.PORT || 1337, () => console.log("listening"));
 
 function handleMessage(sender_psid, received_message) {
   let response;
@@ -215,4 +221,22 @@ function getTheavsPost() {
         post.title.toLowerCase().includes("leafs") &&
         post.author.name.toLowerCase().includes("theavs")
     );
+}
+
+function notifyWatchdog() {
+  var watch = new watchdog.Watch();
+  watch.setName("boysinblue");
+  watch.setFrequency(watchdog.Watch.Frequency.DAILY);
+
+  fetch("https://watchdog.joshchorlton.com/ping", {
+    method: "POST",
+    body: watch.serializeBinary(),
+  }).then(resp => {
+    if (resp.status != 200) {
+      console.error("Error notifying watchdog");
+      resp.text().then(text => {
+        console.error(text);
+      });
+    }
+  })
 }
